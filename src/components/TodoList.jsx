@@ -1,33 +1,21 @@
 import { useState } from 'react';
 import TodoItem from './TodoItem'
+import { useContext } from 'react';
+import { TodoContext } from '../contexts/TodoContext';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function TodoList() {
 
-    const [selectedItems, setSelectedItems] = useState(false);
-
-    const [tasks, setTasks] = useState([
-        {
-            id: 1,
-            text: 'Doctor Appointment',
-            completed: true
-        },
-        {
-            id: 2,
-            text: 'Meeting at School',
-            completed: false
-        }
-    ]);
+    const { tasks, setTasks } = useContext(TodoContext)
 
     return (
-        <div className='mx-auto flex flex-col gap-6 py-12 w-2/3'>
+        <div className='flex flex-col gap-8'>
 
-            <h1 className='text-center font-semibold text-4xl text-gray-700'>Todo List</h1>
             {tasks.map((taskItem) => {
                 return (
-                    <TodoItem id={taskItem.id} text={taskItem.text} completed={taskItem.completed} />
+                    <TodoItem key={uuidv4()} id={taskItem.id} text={taskItem.text} completed={taskItem.completed} />
                 )
             })}
-
 
         </div>
     )
