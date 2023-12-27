@@ -11,6 +11,6 @@ Run project: pnpm run dev
 
 
 
-preview:
+# preview
 ![Alt Text](/src/assets/preview%20.gif)
 
