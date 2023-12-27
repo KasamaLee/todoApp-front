@@ -14,7 +14,7 @@ export default function UpdateForm({ handleCancel, id }) {
     }
 
     return (
-        <div className='grow flex'>
+        <div className='grow flex gap-1'>
             <input
                 id='text'
                 placeholder={'Update task'}

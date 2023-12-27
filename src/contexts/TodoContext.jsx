@@ -12,9 +12,9 @@ export default function TodoContextProvider({ children }) {
     const [tasks, setTasks] = useState([]);
     const [taskInput, setTaskInput] = useState('')
     const [editingId, setEditingId] = useState(null);
-    const [completed, setCompleted] = useState(null);
-
     const [defaultInput, setDefaultInput] = useState('')
+
+    const [selectedCategory, setSelectedCategory] = useState('none')
 
 
     useEffect(() => {
@@ -25,8 +25,9 @@ export default function TodoContextProvider({ children }) {
         return [...tasks].sort((x, y) => y.completed - x.completed)
     }, [tasks])
 
-    console.log('tasks', tasks)
-    console.log('sortedTask', sortedTasks)
+
+    // console.log('tasks', tasks)
+    // console.log('sortedTask', sortedTasks)
 
     // ###### READ ######
     const fetchTask = async () => {
@@ -48,7 +49,6 @@ export default function TodoContextProvider({ children }) {
 
     // ###### CREATE ######
     const handleCreateTask = async () => {
-
         if (taskInput.trim() === '') {
             alert('Please add your task')
         }
@@ -99,7 +99,8 @@ export default function TodoContextProvider({ children }) {
                 defaultInput, setDefaultInput,
                 handleUpdateTask,
                 handleDeleteTask,
-                handleCompletedStatus
+                handleCompletedStatus,
+                selectedCategory, setSelectedCategory
             }}
         >
             {children}
