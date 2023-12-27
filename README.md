@@ -12,5 +12,5 @@ Run project: pnpm run dev
 
 
 preview:
-[Video](/src/assets/preview.mp4)
+![Alt Text](/src/assets/preview.gif)
 
