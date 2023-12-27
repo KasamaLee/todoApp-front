@@ -1,36 +1,20 @@
 import axios from 'axios'
 import React from 'react'
+import { useContext } from 'react'
 import { useState } from 'react'
+import { TodoContext } from '../contexts/TodoContext'
 
-export default function TodoForm() {
+export default function TodoForm({ defaultText }) {
 
-    const [taskInput, setTaskInput] = useState('')
+    const { taskInput, setTaskInput, handleInputChange, handleCreateTask } = useContext(TodoContext);
 
-    const handleInputChange = (e) => {
-        setTaskInput(e.target.value)
-    }
-    console.log(taskInput)
-
-    const handleCreateTask = async () => {
-        if (taskInput.trim() === '') {
-            alert('Please add your task')
-        }
-
-        const request = {
-            text: taskInput
-        }
-        
-        const response = await axios.post('http://localhost:7777/todo/create', request)
-        setTaskInput('')
-        // console.log(response)
-    }
 
     return (
 
-        <div className='relative'>
+        <div className='relative w-full'>
             <input
                 id='text'
-                placeholder='+ Add new task'
+                placeholder={'Add new task'}
                 type='text'
                 value={taskInput}
                 maxLength={40}
@@ -39,7 +23,7 @@ export default function TodoForm() {
             />
 
             <button
-                className='absolute right-2 top-1 text-white px-4 py-2 bg-green-500 rounded-3xl flex justify-center items-center gap-1 hover:opacity-50'
+                className='absolute right-2 top-1 text-white px-4 py-2 bg-green-500 rounded-3xl flex justify-center items-center gap-1 hover:opacity-60'
                 onClick={handleCreateTask}
             >
                 Add
