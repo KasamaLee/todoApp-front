@@ -19,3 +19,7 @@
     font-family: "IBM Plex Sans Thai", sans-serif;
   }
 }
+
+html {
+  @apply bg-gray-50;
+}
