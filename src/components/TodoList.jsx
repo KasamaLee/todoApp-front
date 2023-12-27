@@ -8,23 +8,15 @@ import CategoryList from './CategoryList';
 
 export default function TodoList() {
 
-    const { tasks, setTasks, sortedTasks, selectedCategory } = useContext(TodoContext)
+    const { tasks, sortedTasks, isSorted } = useContext(TodoContext)
+
+    console.log(isSorted)
 
     return (
         <div className='flex flex-col gap-8'>
             <CategoryList />
-            {selectedCategory === 'none' ? (
-                tasks.map((taskItem) => {
-                    return (
-                        <TodoItem
-                            key={uuidv4()}
-                            id={taskItem.id}
-                            text={taskItem.text}
-                            completedStatus={taskItem.completed}
-                        />
-                    )
-                })
-            ) : selectedCategory === 'sorted' ? (
+
+            {isSorted ? (
                 sortedTasks.map((taskItem) => {
                     return (
                         <TodoItem
@@ -36,7 +28,7 @@ export default function TodoList() {
                     )
                 })
             ) : (
-                sortedTasks.reverse().map((taskItem) => {
+                tasks.map((taskItem) => {
                     return (
                         <TodoItem
                             key={uuidv4()}

@@ -14,7 +14,7 @@ export default function TodoContextProvider({ children }) {
     const [editingId, setEditingId] = useState(null);
     const [defaultInput, setDefaultInput] = useState('')
 
-    const [selectedCategory, setSelectedCategory] = useState('none')
+    const [isSorted, setIsSorted] = useState(false)
 
 
     useEffect(() => {
@@ -27,7 +27,7 @@ export default function TodoContextProvider({ children }) {
 
 
     // console.log('tasks', tasks)
-    // console.log('sortedTask', sortedTasks)
+    console.log('sortedTask', sortedTasks)
 
     // ###### READ ######
     const fetchTask = async () => {
@@ -100,7 +100,7 @@ export default function TodoContextProvider({ children }) {
                 handleUpdateTask,
                 handleDeleteTask,
                 handleCompletedStatus,
-                selectedCategory, setSelectedCategory
+                isSorted, setIsSorted
             }}
         >
             {children}
