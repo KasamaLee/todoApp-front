@@ -6,11 +6,15 @@ import { v4 as uuidv4 } from 'uuid';
 
 export default function TodoList() {
 
-    const { tasks } = useContext(TodoContext)
+    const { tasks, sortedTasks} = useContext(TodoContext)
 
 
     return (
         <div className='flex flex-col gap-8'>
+
+            <div>
+                
+            </div>
 
             {tasks.map((taskItem) => {
                 return (

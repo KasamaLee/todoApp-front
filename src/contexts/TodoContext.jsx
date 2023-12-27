@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react'
+import { useMemo } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { createContext } from 'react'
@@ -7,23 +8,27 @@ import { createContext } from 'react'
 export const TodoContext = createContext();
 
 export default function TodoContextProvider({ children }) {
-    const [selectedItems, setSelectedItems] = useState(false);
 
     const [tasks, setTasks] = useState([]);
     const [taskInput, setTaskInput] = useState('')
     const [editingId, setEditingId] = useState(null);
-    const [isOpenUpdateForm, setIsOpenUpdateForm] = useState(false);
     const [completed, setCompleted] = useState(null);
-    const [updateInput, setUpdateInput] = useState()
 
+    const [defaultInput, setDefaultInput] = useState('')
 
 
     useEffect(() => {
         fetchTask()
     }, [])
 
-    console.log(tasks)
+    const sortedTasks = useMemo(() => {
+        return [...tasks].sort((x, y) => y.completed - x.completed)
+    }, [tasks])
 
+    console.log('tasks', tasks)
+    console.log('sortedTask', sortedTasks)
+
+    // ###### READ ######
     const fetchTask = async () => {
         try {
             const response = await axios.get('http://localhost:7777/todo/read')
@@ -33,11 +38,6 @@ export default function TodoContextProvider({ children }) {
         }
     }
 
-    const handleInputChange = (e) => {
-        setTaskInput(e.target.value)
-    }
-    // console.log(taskInput)
-
     const handleSelectEdit = (id) => {
         setEditingId(id)
     }
@@ -46,7 +46,7 @@ export default function TodoContextProvider({ children }) {
         setEditingId(null)
     }
 
-
+    // ###### CREATE ######
     const handleCreateTask = async () => {
 
         if (taskInput.trim() === '') {
@@ -59,11 +59,25 @@ export default function TodoContextProvider({ children }) {
         }
 
         const response = await axios.post('http://localhost:7777/todo/create', request)
-        setTaskInput('')
         // console.log(response)
+        setTaskInput('')
+        fetchTask()
     }
 
+    // ###### UPDATE ######
+    const handleUpdateTask = async (id, updatedText) => {
+        const response = await axios.patch(`http://localhost:7777/todo/update/${id}`, { updatedText })
+        // console.log(response)
+        handleCancel()
+        fetchTask()
+    }
 
+    const handleCompletedStatus = async (id, status) => {
+        const response = await axios.patch(`http://localhost:7777/todo/updateStatus/${id}`, { status })
+        fetchTask()
+    }
+
+    // ###### DELETE ######
     const handleDeleteTask = async (id) => {
         const response = await axios.delete(`http://localhost:7777/todo/delete/${id}`)
         console.log(response)
@@ -75,15 +89,17 @@ export default function TodoContextProvider({ children }) {
         <TodoContext.Provider
             value={{
                 tasks, setTasks,
+                sortedTasks,
                 fetchTask,
                 taskInput, setTaskInput,
-                handleInputChange, handleCreateTask,
+                handleCreateTask,
                 editingId, setEditingId,
                 handleSelectEdit,
                 handleCancel,
-                updateInput, setUpdateInput,
+                defaultInput, setDefaultInput,
+                handleUpdateTask,
                 handleDeleteTask,
-                // completed, setCompleted
+                handleCompletedStatus
             }}
         >
             {children}

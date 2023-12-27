@@ -6,19 +6,21 @@ import UpdateForm from './UpdateForm';
 import { useEffect } from 'react';
 import { useContext } from 'react';
 import { TodoContext } from '../contexts/TodoContext';
+import axios from 'axios';
 
 
 export default function TodoItem({ id, text, completedStatus }) {
 
 
-    const [completed, setCompleted] = useState(completedStatus);
-    const { setUpdateInput, handleSelectEdit, handleCancel, editingId, setEditingId, handleDeleteTask } = useContext(TodoContext);
+    const [isCompleted, setIsCompleted] = useState(completedStatus);
+    const { handleSelectEdit, handleCancel, editingId, setEditingId, setDefaultInput, handleDeleteTask, handleCompletedStatus } = useContext(TodoContext);
 
 
-    const handleCompletedToggle = (id) => {
-        setCompleted(!completed)
-        // completed = !completed
-        console.log(completed, '-----', id)
+    const handleToggle = async () => {
+        const newCompletedStatus = !isCompleted;
+        setIsCompleted(newCompletedStatus);
+
+        handleCompletedStatus(id, newCompletedStatus);
     }
 
     return (
@@ -32,29 +34,32 @@ export default function TodoItem({ id, text, completedStatus }) {
                     <>
                         <div
                             className='grow flex gap-4 items-center cursor-pointer hover:text-green-500 active:text-gray-300'
-                            onClick={() => handleCompletedToggle(id)}
+                            onClick={() => {
+                                handleToggle()
+                            }}
                         >
-                            {completed ? (
+                            {isCompleted ? (
                                 <FontAwesomeIcon icon={faSquareCheck} size='2x'
                                     className={`text-green-500 active:text-gray-300`}
-                                // onClick={}
                                 />
                             ) : (
                                 <FontAwesomeIcon icon={faSquareUncheck} size='2x'
                                 />
                             )}
-                            <p className={`${completed && 'line-through'} grow text-lg font-semibold`}>{text}</p>
+                            <p className={`${isCompleted && 'line-through'} grow text-lg font-semibold`}>{text}</p>
                         </div>
                         <div className='flex gap-2'>
-                            <FontAwesomeIcon
-                                icon={faEdit}
-                                size='xl'
-                                className={`cursor-pointer text-gray-600 hover:text-blue-500 active:text-blue-500`}
-                                onClick={() => {
-                                    handleSelectEdit(id)
-                                    setUpdateInput(text)
-                                }}
-                            />
+                            {!completedStatus &&
+                                <FontAwesomeIcon
+                                    icon={faEdit}
+                                    size='xl'
+                                    className={`cursor-pointer text-gray-600 hover:text-blue-500 active:text-blue-500`}
+                                    onClick={() => {
+                                        handleSelectEdit(id)
+                                        setDefaultInput(text)
+                                    }}
+                                />
+                            }
                             <FontAwesomeIcon
                                 icon={faTrash} size='xl'
                                 className={`cursor-pointer text-gray-600 hover:text-red-500 active:text-red-500`}

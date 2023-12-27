@@ -6,8 +6,12 @@ import { TodoContext } from '../contexts/TodoContext'
 
 export default function TodoForm({ defaultText }) {
 
-    const { taskInput, setTaskInput, handleInputChange, handleCreateTask } = useContext(TodoContext);
+    const { taskInput, setTaskInput, handleCreateTask } = useContext(TodoContext);
 
+    const handleInputChange = (e) => {
+        setTaskInput(e.target.value)
+    }
+    // console.log(taskInput)
 
     return (
 
