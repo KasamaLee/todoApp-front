@@ -12,7 +12,7 @@ export default function CategoryList() {
         { name: 'uncompleted' },
     ]
 
-    const { tasks, setTasks, sortedTasks, selectedCategory, setSelectedCategory } = useContext(TodoContext)
+    const { selectedCategory, setSelectedCategory } = useContext(TodoContext)
 
 
     return (
